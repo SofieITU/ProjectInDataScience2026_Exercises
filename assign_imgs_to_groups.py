@@ -21,8 +21,11 @@ df_labels_group = df_labels[df_labels["group_id"]==GROUP_ID]
 
 #For each image assigned to the group, copy it and its mask to the group_data folder
 for img_path in df_labels_group["img_id"]:
-    shutil.copyfile(f"{PATH_RAW}/imgs/{img_path}", f"{PATH_IMGS}/{img_path}")
-    shutil.copyfile(f"{PATH_RAW}/masks/{img_path.replace('.png','_mask.png')}", f"{PATH_MASKS}/{img_path.replace('.png','_mask.png')}")
+    try:
+        shutil.copyfile(f"{PATH_RAW}/imgs/{img_path}", f"{PATH_IMGS}/{img_path}")
+        shutil.copyfile(f"{PATH_RAW}/masks/{img_path.replace('.png','_mask.png')}", f"{PATH_MASKS}/{img_path.replace('.png','_mask.png')}")
+    except:
+        print(f"PROBLEM WITH {img_path}, please check that both the image and associated mask are present in the folders")
 
 #Save the filtered metadata files in the group_data folder
 df_labels_group.to_csv(f"{PATH_PROCESSED}/metadata.csv")
